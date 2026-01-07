@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¿Qué enchufe necesitas para viajar?</title>
+  <meta id="meta-description" name="description" content="Descubre si necesitas adaptador de enchufe al viajar entre países. Selecciona tu origen y destino para conocer tipos de enchufe, voltaje y frecuencia en segundos." />
+  <link id="canonical" rel="canonical" href="https://queenchufe.com/" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="/">queenchufe.com</a>
+      <nav class="nav">
+        <a href="/aviso-legal/">Aviso legal</a>
+        <a href="/privacidad/">Privacidad</a>
+        <a href="/cookies/">Cookies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home" class="panel">
+      <h1>¿Qué enchufe necesitas para viajar?</h1>
+      <p class="lead">
+        Viajar sin adaptador puede arruinar una llegada. En queenchufe.com puedes comprobar en segundos si tu enchufe es compatible en el país de destino, conocer el voltaje y la frecuencia, y planificar tu equipaje con confianza. Selecciona tu país de origen y tu destino para ver si necesitas adaptador, revisar los tipos de enchufe que se usan y entender si tu cargador funcionará sin problemas. Nuestra base de datos local incluye todos los países del mundo con información clara y rápida de consultar. Incluye compatibilidad rápida para viajeros frecuentes, estudiantes de intercambio y familias que necesitan cargar varios dispositivos cada día. También te mostramos si el voltaje es similar para que decidas si basta con un adaptador o si necesitas un transformador. Esta guía es ideal para viajes de trabajo, vacaciones o mochileros que quieren evitar sorpresas en el aeropuerto o en el hotel. Guarda esta página antes de viajar y consulta siempre las recomendaciones oficiales de tus dispositivos.
+      </p>
+
+      <form id="search-form" class="form">
+        <label>
+          País de origen
+          <select id="origin" required></select>
+        </label>
+        <label>
+          País de destino
+          <select id="destination" required></select>
+        </label>
+        <button type="submit">Ver resultado</button>
+      </form>
+
+      <div class="ad-slot">
+        <!-- ADS HERE -->
+        <div class="ad-placeholder">Espacio reservado para Google Ads (728x90 / responsive)</div>
+      </div>
+    </section>
+
+    <section id="result" class="panel hidden">
+      <div class="result-header">
+        <p id="result-message" class="result-message"></p>
+        <p id="result-subtitle" class="result-subtitle"></p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Enchufes del país origen</h2>
+          <div id="origin-plugs" class="plug-list"></div>
+        </div>
+        <div class="card">
+          <h2>Enchufes del país destino</h2>
+          <div id="destination-plugs" class="plug-list"></div>
+        </div>
+      </div>
+
+      <div class="ad-slot">
+        <!-- ADS HERE -->
+        <div class="ad-placeholder">Espacio reservado para Google Ads (responsive)</div>
+      </div>
+
+      <div class="card">
+        <h2>Voltaje y frecuencia</h2>
+        <p id="voltage-text"></p>
+        <p class="note">Nota: la mayoría de cargadores modernos soportan un rango de 110–240 V, pero revisa la etiqueta de tu dispositivo.</p>
+      </div>
+
+      <section class="card">
+        <h2>Preguntas frecuentes</h2>
+        <div class="faq">
+          <details>
+            <summary>¿Necesito adaptador para viajar a este país?</summary>
+            <p id="faq-adapter"></p>
+          </details>
+          <details>
+            <summary>¿Funciona mi cargador de celular?</summary>
+            <p>Si tu cargador indica “input 100–240 V”, funcionará sin problema y solo podrías necesitar adaptador físico.</p>
+          </details>
+          <details>
+            <summary>¿Qué tipo de enchufe se usa en el país destino?</summary>
+            <p id="faq-plugs"></p>
+          </details>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© 2026 queenchufe.com</span>
+      <div class="footer-links">
+        <a href="/aviso-legal/">Aviso legal</a>
+        <a href="/privacidad/">Privacidad</a>
+        <a href="/cookies/">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+  <script id="faq-schema" type="application/ld+json"></script>
+  <script src="/assets/main.js"></script>
+</body>
+</html>
