@@ -158,16 +158,38 @@ button:hover {
 .plug-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 12px;
 }
 
-.plug-pill {
+.plug-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 78px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: #fdfdff;
+}
+
+.plug-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.plug-letter {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.plug-letter--badge {
   background: #edf1ff;
   color: var(--primary);
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 999px;
-  font-weight: 700;
 }
 
 .status-success {

@@ -44,13 +44,37 @@ const isVoltageCompatible = (originVoltage, destinationVoltage) => {
   return false;
 };
 
-const setPlugPills = (container, plugs) => {
+const createPlugItem = (plug) => {
+  const item = document.createElement('div');
+  item.className = 'plug-item';
+
+  const img = document.createElement('img');
+  img.className = 'plug-icon';
+  img.alt = `Enchufe tipo ${plug}`;
+  img.loading = 'lazy';
+  img.src = `/public/plugs/plug-${plug.toLowerCase()}.svg`;
+
+  const label = document.createElement('span');
+  label.className = 'plug-letter';
+  label.textContent = plug;
+
+  img.addEventListener(
+    'error',
+    () => {
+      img.remove();
+      label.classList.add('plug-letter--badge');
+    },
+    { once: true }
+  );
+
+  item.append(img, label);
+  return item;
+};
+
+const setPlugItems = (container, plugs) => {
   container.innerHTML = '';
   plugs.forEach((plug) => {
-    const pill = document.createElement('span');
-    pill.className = 'plug-pill';
-    pill.textContent = plug;
-    container.appendChild(pill);
+    container.appendChild(createPlugItem(plug));
   });
 };
 
@@ -122,7 +146,7 @@ fetch('/data/countries.json')
 
     if (!origin || !destination) {
       updateSeo({
-        title: 'País no encontrado | queenchufe.com',
+        title: 'País no encontrado | QueEnchufe.com',
         description: 'No encontramos los países indicados. Vuelve al buscador para comprobar enchufes y voltaje.',
         canonical: `${BASE_URL}/`,
       });
@@ -144,8 +168,8 @@ fetch('/data/countries.json')
     RESULT_MESSAGE.classList.add(needsAdapter ? 'status-danger' : 'status-success');
     RESULT_SUBTITLE.textContent = `Viajas desde ${origin.name} hacia ${destination.name}.`;
 
-    setPlugPills(ORIGIN_PLUGS, origin.plugs);
-    setPlugPills(DEST_PLUGS, destination.plugs);
+    setPlugItems(ORIGIN_PLUGS, origin.plugs);
+    setPlugItems(DEST_PLUGS, destination.plugs);
 
     const voltageCompatible = isVoltageCompatible(origin.voltage, destination.voltage);
     VOLTAGE_TEXT.textContent = `${origin.name}: ${origin.voltage} / ${origin.frequency}. ${destination.name}: ${destination.voltage} / ${destination.frequency}. ` +
