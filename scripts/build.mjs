@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outputDir = path.join(projectRoot, "dist");
+const publicPlugsDir = path.join(projectRoot, "public", "plugs");
+const distPlugsDir = path.join(outputDir, "plugs");
 const exclude = new Set([
   ".git",
   "dist",
@@ -42,6 +44,12 @@ for (const entry of entries) {
   if (entryStat.isFile()) {
     await cp(sourcePath, destinationPath);
   }
+}
+
+try {
+  await cp(publicPlugsDir, distPlugsDir, { recursive: true });
+} catch {
+  // Ignore if public/plugs does not exist.
 }
 
 console.log("Static build prepared in dist/");

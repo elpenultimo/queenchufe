@@ -44,13 +44,47 @@ const isVoltageCompatible = (originVoltage, destinationVoltage) => {
   return false;
 };
 
+const createPlugFallback = (plug) => {
+  const fallback = document.createElement('span');
+  fallback.className = 'plug-fallback';
+  fallback.textContent = plug;
+  fallback.setAttribute('role', 'img');
+  fallback.setAttribute('aria-label', `Enchufe tipo ${plug}`);
+  return fallback;
+};
+
+const createPlugImage = (plug, label) => {
+  const image = document.createElement('img');
+  image.className = 'plug-image';
+  image.src = `/plugs/plug-${plug.toLowerCase()}.svg`;
+  image.alt = `Enchufe tipo ${plug}`;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  image.addEventListener('error', () => {
+    const fallback = createPlugFallback(plug);
+    image.replaceWith(fallback);
+    label?.remove();
+  });
+  return image;
+};
+
 const setPlugPills = (container, plugs) => {
   container.innerHTML = '';
+  container.setAttribute('role', 'list');
   plugs.forEach((plug) => {
-    const pill = document.createElement('span');
-    pill.className = 'plug-pill';
-    pill.textContent = plug;
-    container.appendChild(pill);
+    const item = document.createElement('div');
+    item.className = 'plug-item';
+    item.setAttribute('role', 'listitem');
+
+    const label = document.createElement('span');
+    label.className = 'plug-label';
+    label.textContent = plug;
+
+    const image = createPlugImage(plug, label);
+
+    item.appendChild(image);
+    item.appendChild(label);
+    container.appendChild(item);
   });
 };
 
@@ -122,7 +156,7 @@ fetch('/data/countries.json')
 
     if (!origin || !destination) {
       updateSeo({
-        title: 'País no encontrado | queenchufe.com',
+        title: 'País no encontrado | QueEnchufe.com',
         description: 'No encontramos los países indicados. Vuelve al buscador para comprobar enchufes y voltaje.',
         canonical: `${BASE_URL}/`,
       });

@@ -158,15 +158,38 @@ button:hover {
 .plug-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 12px;
 }
 
-.plug-pill {
-  background: #edf1ff;
+.plug-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 64px;
+}
+
+.plug-image,
+.plug-fallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plug-label {
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--primary);
-  padding: 8px 12px;
-  border-radius: 999px;
+}
+
+.plug-fallback {
+  color: var(--primary);
   font-weight: 700;
 }
 
