@@ -21,6 +21,12 @@ const BASE_URL = 'https://queenchufe.com';
 const pathParts = window.location.pathname.split('/').filter(Boolean);
 const isResultPage = pathParts.length === 2 && pathParts.every((part) => part.length === 2);
 
+const COUNTRY_DISPLAY_NAMES = typeof Intl !== 'undefined' && Intl.DisplayNames
+  ? new Intl.DisplayNames(['es'], { type: 'region' })
+  : null;
+
+const getCountryName = (code, fallbackName) => COUNTRY_DISPLAY_NAMES?.of(code) ?? fallbackName;
+
 const formatCountryOption = (code, name) => {
   const option = document.createElement('option');
   option.value = code;
@@ -134,11 +140,17 @@ const updateFaqSchema = ({ originName, destinationName, needsAdapter, destinatio
 fetch('/data/countries.json')
   .then((response) => response.json())
   .then((countries) => {
-    const entries = Object.entries(countries).sort(([, a], [, b]) => a.name.localeCompare(b.name));
+    const countryNames = Object.fromEntries(
+      Object.entries(countries).map(([code, data]) => [code, getCountryName(code, data.name)])
+    );
+    const entries = Object.entries(countries).sort(([codeA], [codeB]) => (
+      countryNames[codeA].localeCompare(countryNames[codeB], 'es')
+    ));
 
     entries.forEach(([code, data]) => {
-      ORIGIN_SELECT?.appendChild(formatCountryOption(code, data.name));
-      DEST_SELECT?.appendChild(formatCountryOption(code, data.name));
+      const displayName = countryNames[code];
+      ORIGIN_SELECT?.appendChild(formatCountryOption(code, displayName));
+      DEST_SELECT?.appendChild(formatCountryOption(code, displayName));
     });
 
     if (!isResultPage) {
@@ -168,6 +180,9 @@ fetch('/data/countries.json')
     HOME_SECTION.classList.add('hidden');
     RESULT_SECTION.classList.remove('hidden');
 
+    const originName = countryNames[originCode] ?? origin.name;
+    const destinationName = countryNames[destinationCode] ?? destination.name;
+
     const destinationPlugSet = new Set(destination.plugs);
     const originPlugSet = new Set(origin.plugs);
     const hasCompatiblePlug = [...destinationPlugSet].some((plug) => originPlugSet.has(plug));
@@ -177,31 +192,31 @@ fetch('/data/countries.json')
       ? '❌ Sí necesitas adaptador'
       : '✅ No necesitas adaptador';
     RESULT_MESSAGE.classList.add(needsAdapter ? 'status-danger' : 'status-success');
-    RESULT_SUBTITLE.textContent = `Viajas desde ${origin.name} hacia ${destination.name}.`;
+    RESULT_SUBTITLE.textContent = `Viajas desde ${originName} hacia ${destinationName}.`;
 
     setPlugPills(ORIGIN_PLUGS, origin.plugs);
     setPlugPills(DEST_PLUGS, destination.plugs);
 
     const voltageCompatible = isVoltageCompatible(origin.voltage, destination.voltage);
-    VOLTAGE_TEXT.textContent = `${origin.name}: ${origin.voltage} / ${origin.frequency}. ${destination.name}: ${destination.voltage} / ${destination.frequency}. ` +
+    VOLTAGE_TEXT.textContent = `${originName}: ${origin.voltage} / ${origin.frequency}. ${destinationName}: ${destination.voltage} / ${destination.frequency}. ` +
       (voltageCompatible
         ? 'El voltaje es compatible.'
         : 'El voltaje es diferente, considera usar transformador si tu equipo no es multivoltaje.');
 
     FAQ_ADAPTER.textContent = needsAdapter
-      ? `Sí. Ningún tipo de enchufe de ${destination.name} (${destination.plugs.join(', ')}) es compatible con ${origin.name}.`
-      : `No. Hay al menos un tipo de enchufe compatible entre ${origin.name} y ${destination.name}.`;
-    FAQ_PLUGS.textContent = `En ${destination.name} se usan los enchufes tipo ${destination.plugs.join(', ')}.`;
+      ? `Sí. Ningún tipo de enchufe de ${destinationName} (${destination.plugs.join(', ')}) es compatible con ${originName}.`
+      : `No. Hay al menos un tipo de enchufe compatible entre ${originName} y ${destinationName}.`;
+    FAQ_PLUGS.textContent = `En ${destinationName} se usan los enchufes tipo ${destination.plugs.join(', ')}.`;
 
     updateSeo({
-      title: `Qué enchufe se usa en ${destination.name} desde ${origin.name}`,
-      description: `Comprueba si necesitas adaptador al viajar desde ${origin.name} a ${destination.name}. Tipos de enchufe, voltaje y frecuencia actualizados.`,
+      title: `Qué enchufe se usa en ${destinationName} desde ${originName}`,
+      description: `Comprueba si necesitas adaptador al viajar desde ${originName} a ${destinationName}. Tipos de enchufe, voltaje y frecuencia actualizados.`,
       canonical: `${BASE_URL}/${originCode.toLowerCase()}/${destinationCode.toLowerCase()}`,
     });
 
     updateFaqSchema({
-      originName: origin.name,
-      destinationName: destination.name,
+      originName,
+      destinationName,
       needsAdapter,
       destinationPlugs: destination.plugs,
     });
