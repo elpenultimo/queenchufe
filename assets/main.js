@@ -14,6 +14,12 @@ const FAQ_PLUGS = document.getElementById('faq-plugs');
 const META_DESCRIPTION = document.getElementById('meta-description');
 const CANONICAL = document.getElementById('canonical');
 const FAQ_SCHEMA = document.getElementById('faq-schema');
+const BREADCRUMB_SCHEMA = document.getElementById('breadcrumb-schema');
+const OG_TITLE = document.getElementById('og-title');
+const OG_DESCRIPTION = document.getElementById('og-description');
+const OG_URL = document.getElementById('og-url');
+const TWITTER_TITLE = document.getElementById('twitter-title');
+const TWITTER_DESCRIPTION = document.getElementById('twitter-description');
 
 const DEFAULT_TITLE = '¿Qué enchufe necesitas para viajar?';
 const BASE_URL = 'https://queenchufe.com';
@@ -98,9 +104,43 @@ const updateSeo = ({ title, description, canonical }) => {
   document.title = title;
   META_DESCRIPTION.setAttribute('content', description);
   CANONICAL.setAttribute('href', canonical);
+  OG_TITLE?.setAttribute('content', title);
+  OG_DESCRIPTION?.setAttribute('content', description);
+  OG_URL?.setAttribute('content', canonical);
+  TWITTER_TITLE?.setAttribute('content', title);
+  TWITTER_DESCRIPTION?.setAttribute('content', description);
 };
 
-const updateFaqSchema = ({ originName, destinationName, needsAdapter, destinationPlugs }) => {
+const updateBreadcrumbSchema = ({ originName, destinationName, canonical }) => {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: `${BASE_URL}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Adaptador de enchufe',
+        item: `${BASE_URL}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: `${originName} a ${destinationName}`,
+        item: canonical,
+      },
+    ],
+  };
+
+  BREADCRUMB_SCHEMA.textContent = JSON.stringify(schema);
+};
+
+const updateFaqSchema = ({ originName, destinationName, adapterAnswer, plugsAnswer }) => {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -110,9 +150,7 @@ const updateFaqSchema = ({ originName, destinationName, needsAdapter, destinatio
         name: '¿Necesito adaptador para viajar a este país?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: needsAdapter
-            ? `Sí. Desde ${originName} hacia ${destinationName} necesitas adaptador si tu enchufe no coincide con los tipos ${destinationPlugs.join(', ')}.`
-            : `No. Los tipos de enchufe de ${destinationName} son compatibles con ${originName}.`,
+          text: adapterAnswer,
         },
       },
       {
@@ -128,7 +166,7 @@ const updateFaqSchema = ({ originName, destinationName, needsAdapter, destinatio
         name: '¿Qué tipo de enchufe se usa en el país destino?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `En ${destinationName} se usan los enchufes tipo ${destinationPlugs.join(', ')}.`,
+          text: plugsAnswer,
         },
       },
     ],
@@ -156,7 +194,7 @@ fetch('/data/countries.json')
     if (!isResultPage) {
       updateSeo({
         title: DEFAULT_TITLE,
-        description: 'Descubre si necesitas adaptador de enchufe al viajar entre países. Tipos de enchufe, voltaje y frecuencia en segundos.',
+        description: 'Descubre si necesitas adaptador de enchufe o clavija al viajar entre países. Tipos de enchufe, voltaje y frecuencia en segundos.',
         canonical: `${BASE_URL}/`,
       });
       return;
@@ -187,6 +225,7 @@ fetch('/data/countries.json')
     const originPlugSet = new Set(origin.plugs);
     const hasCompatiblePlug = [...destinationPlugSet].some((plug) => originPlugSet.has(plug));
     const needsAdapter = !hasCompatiblePlug;
+    const canonicalUrl = `${BASE_URL}/${originCode.toLowerCase()}/${destinationCode.toLowerCase()}`;
 
     RESULT_MESSAGE.textContent = needsAdapter
       ? '❌ Sí necesitas adaptador'
@@ -203,22 +242,35 @@ fetch('/data/countries.json')
         ? 'El voltaje es compatible.'
         : 'El voltaje es diferente, considera usar transformador si tu equipo no es multivoltaje.');
 
-    FAQ_ADAPTER.textContent = needsAdapter
+    const adapterAnswer = needsAdapter
       ? `Sí. Ningún tipo de enchufe de ${destinationName} (${destination.plugs.join(', ')}) es compatible con ${originName}.`
       : `No. Hay al menos un tipo de enchufe compatible entre ${originName} y ${destinationName}.`;
-    FAQ_PLUGS.textContent = `En ${destinationName} se usan los enchufes tipo ${destination.plugs.join(', ')}.`;
+    const plugsAnswer = `En ${destinationName} se usan los enchufes tipo ${destination.plugs.join(', ')}.`;
+
+    FAQ_ADAPTER.textContent = adapterAnswer;
+    FAQ_PLUGS.textContent = plugsAnswer;
 
     updateSeo({
-      title: `Qué enchufe se usa en ${destinationName} desde ${originName}`,
-      description: `Comprueba si necesitas adaptador al viajar desde ${originName} a ${destinationName}. Tipos de enchufe, voltaje y frecuencia actualizados.`,
-      canonical: `${BASE_URL}/${originCode.toLowerCase()}/${destinationCode.toLowerCase()}`,
+      title: needsAdapter
+        ? `Adaptador de enchufe o clavija: ${originName} → ${destinationName} | QueEnchufe.com`
+        : `¿Necesitas adaptador de enchufe o clavija? ${originName} → ${destinationName} | QueEnchufe.com`,
+      description: needsAdapter
+        ? `Comprueba si necesitas adaptador de enchufe o clavija al viajar de ${originName} a ${destinationName}. Tipos de enchufe, voltaje y frecuencia en segundos.`
+        : `Comprueba si necesitas adaptador de enchufe o clavija al viajar de ${originName} a ${destinationName}. Tipos de enchufe, voltaje y frecuencia en segundos.`,
+      canonical: canonicalUrl,
+    });
+
+    updateBreadcrumbSchema({
+      originName,
+      destinationName,
+      canonical: canonicalUrl,
     });
 
     updateFaqSchema({
       originName,
       destinationName,
-      needsAdapter,
-      destinationPlugs: destination.plugs,
+      adapterAnswer,
+      plugsAnswer,
     });
   });
 
