@@ -170,7 +170,8 @@ fetch('/data/countries.json')
 
     const destinationPlugSet = new Set(destination.plugs);
     const originPlugSet = new Set(origin.plugs);
-    const needsAdapter = [...destinationPlugSet].some((plug) => !originPlugSet.has(plug));
+    const hasCompatiblePlug = [...destinationPlugSet].some((plug) => originPlugSet.has(plug));
+    const needsAdapter = !hasCompatiblePlug;
 
     RESULT_MESSAGE.textContent = needsAdapter
       ? '❌ Sí necesitas adaptador'
@@ -188,8 +189,8 @@ fetch('/data/countries.json')
         : 'El voltaje es diferente, considera usar transformador si tu equipo no es multivoltaje.');
 
     FAQ_ADAPTER.textContent = needsAdapter
-      ? `Sí. Los enchufes de ${destination.name} (${destination.plugs.join(', ')}) no son todos compatibles con ${origin.name}.`
-      : `No. Los tipos de enchufe de ${destination.name} son compatibles con los de ${origin.name}.`;
+      ? `Sí. Ningún tipo de enchufe de ${destination.name} (${destination.plugs.join(', ')}) es compatible con ${origin.name}.`
+      : `No. Hay al menos un tipo de enchufe compatible entre ${origin.name} y ${destination.name}.`;
     FAQ_PLUGS.textContent = `En ${destination.name} se usan los enchufes tipo ${destination.plugs.join(', ')}.`;
 
     updateSeo({
