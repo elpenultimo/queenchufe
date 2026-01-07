@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/:origin([a-z]{2})/:destination([a-z]{2})",
+      "destination": "/index.html"
+    }
+  ]
+}
