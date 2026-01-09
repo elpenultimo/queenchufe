@@ -6,6 +6,8 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const outputDir = path.join(projectRoot, "dist");
 const publicPlugsDir = path.join(projectRoot, "public", "plugs");
 const distPlugsDir = path.join(outputDir, "plugs");
+const publicTilesDir = path.join(projectRoot, "public", "tiles");
+const distTilesDir = path.join(outputDir, "tiles");
 const exclude = new Set([
   ".git",
   "dist",
@@ -52,6 +54,12 @@ try {
   await cp(publicPlugsDir, distPlugsDir, { recursive: true });
 } catch {
   // Ignore if public/plugs does not exist.
+}
+
+try {
+  await cp(publicTilesDir, distTilesDir, { recursive: true });
+} catch {
+  // Ignore if public/tiles does not exist.
 }
 
 const PRIORITY_ORIGINS = [
