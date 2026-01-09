@@ -1,19 +1,22 @@
 :root {
   color-scheme: light;
-  --bg: #eff6ff;
-  --text: #1c2434;
-  --muted: #5c657a;
-  --primary: #2563eb;
-  --accent: #f97316;
-  --soft-blue: #eff6ff;
-  --soft-orange: #fff7ed;
-  --card: #ffffff;
-  --border: #dce2ee;
+  --bg: #fbfbfb;
+  --surface: #ffffff;
+  --border: #e9ecef;
+  --text: #171717;
+  --muted: #6b7280;
+  --primary: #2c67ef;
+  --primary-dark: #2357cc;
+  --cyan: #60d0e9;
+  --green: #469a67;
+  --yellow: #f4c430;
+  --shadow-sm: 0 8px 20px rgba(23, 23, 23, 0.06);
+  --shadow-md: 0 14px 28px rgba(23, 23, 23, 0.12);
+  --focus-ring: rgba(96, 208, 233, 0.35);
   --success: #16a34a;
   --danger: #dc2626;
   --success-bg: #dcfce7;
   --danger-bg: #fee2e2;
-  --accent-glow: rgba(249, 115, 22, 0.2);
 }
 
 * {
@@ -40,7 +43,7 @@ a {
 }
 
 .site-header {
-  background: var(--card);
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
 }
@@ -57,6 +60,11 @@ a {
   color: var(--muted);
 }
 
+.nav a:hover,
+.nav a:focus-visible {
+  color: var(--primary);
+}
+
 .site-header .container,
 .site-footer .container {
   display: flex;
@@ -71,11 +79,11 @@ main {
 }
 
 .panel {
-  background: var(--card);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 10px 30px rgba(19, 29, 52, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
 }
 
 h1 {
@@ -90,8 +98,8 @@ h1 {
 
 .form {
   display: grid;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 18px;
+  margin-bottom: 28px;
 }
 
 label {
@@ -102,17 +110,17 @@ label {
 
 select,
 button {
-  padding: 12px 14px;
-  border-radius: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
   border: 1px solid var(--border);
   font-size: 1rem;
 }
 
 select:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--cyan);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--accent-glow);
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
 button {
@@ -121,12 +129,13 @@ button {
   border: none;
   cursor: pointer;
   font-weight: 600;
+  width: 100%;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 button:hover {
-  background: linear-gradient(120deg, #2563eb, #1d4ed8);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  background: var(--primary-dark);
+  box-shadow: 0 12px 24px rgba(44, 103, 239, 0.2);
   transform: translateY(-1px);
 }
 
@@ -135,8 +144,8 @@ button:hover {
   border-radius: 12px;
   padding: 16px;
   text-align: center;
-  background: #fefefe;
-  margin: 20px 0;
+  background: var(--surface);
+  margin: 24px 0;
 }
 
 .ad-placeholder {
@@ -165,35 +174,74 @@ button:hover {
 
 .grid {
   display: grid;
-  gap: 16px;
+  gap: 24px;
 }
 
 .info-cards {
-  margin-top: 24px;
-}
-
-.info-cards .card {
-  margin-top: 0;
+  margin-top: 32px;
 }
 
 .card {
-  background: var(--card);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 16px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 16px 30px rgba(19, 29, 52, 0.1);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
-.info-cards .card {
-  border-top: 4px solid var(--accent);
-  background: linear-gradient(140deg, #ffffff 0%, var(--soft-orange) 100%);
+.card-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-tile__media {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    135deg,
+    rgba(44, 103, 239, 0.18) 0%,
+    rgba(96, 208, 233, 0.25) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.card-tile__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-tile__content {
+  padding: 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.card-tile__content h3 {
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+}
+
+.card-tile__content p {
+  color: var(--muted);
 }
 
 .plug-list {
@@ -217,7 +265,7 @@ button:hover {
   height: 56px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--soft-blue);
+  background: rgba(44, 103, 239, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,8 +273,8 @@ button:hover {
 
 .plug-item:nth-child(even) .plug-image,
 .plug-item:nth-child(even) .plug-fallback {
-  background: var(--soft-orange);
-  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(96, 208, 233, 0.2);
+  border-color: rgba(96, 208, 233, 0.4);
 }
 
 .plug-label {
@@ -274,7 +322,7 @@ button:hover {
 
 .site-footer {
   border-top: 1px solid var(--border);
-  background: var(--card);
+  background: var(--surface);
   padding: 16px 0;
   font-size: 0.9rem;
   color: var(--muted);
@@ -294,8 +342,14 @@ button:hover {
 
 .footer-links a:hover,
 .footer-links a:focus-visible {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
+  color: var(--primary);
+  text-decoration-color: var(--primary);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 @media (min-width: 768px) {
@@ -307,9 +361,16 @@ button:hover {
   .form button {
     grid-column: span 2;
     width: 220px;
+    justify-self: start;
   }
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tile-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
