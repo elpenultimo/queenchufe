@@ -10,6 +10,9 @@
   --cyan: #60d0e9;
   --green: #469a67;
   --yellow: #f4c430;
+  --violet: #8b5cf6;
+  --orange: #f97316;
+  --emerald: #10b981;
   --shadow-sm: 0 8px 20px rgba(23, 23, 23, 0.06);
   --shadow-md: 0 14px 28px rgba(23, 23, 23, 0.12);
   --focus-ring: rgba(96, 208, 233, 0.35);
@@ -235,14 +238,15 @@ button:hover {
   aspect-ratio: 16 / 9;
   background: linear-gradient(
     135deg,
-    rgba(44, 103, 239, 0.18) 0%,
-    rgba(96, 208, 233, 0.25) 100%
+    rgba(44, 103, 239, 0.16) 0%,
+    rgba(96, 208, 233, 0.22) 100%
   );
   position: relative;
   overflow: hidden;
   display: grid;
   place-items: center;
   border-radius: 24px 24px 0 0;
+  color: var(--primary);
 }
 
 .card-tile__media img {
@@ -262,7 +266,7 @@ button:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.28));
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.32));
   z-index: 1;
   pointer-events: none;
 }
@@ -270,9 +274,29 @@ button:hover {
 .card-tile__icon {
   width: clamp(48px, 20vw, 68px);
   height: clamp(48px, 20vw, 68px);
-  color: rgba(44, 103, 239, 0.9);
+  color: rgba(44, 103, 239, 0.85);
   z-index: 2;
   transition: opacity 0.2s ease;
+}
+
+.card-tile__icon .icon-detail {
+  opacity: 0.5;
+}
+
+.card-tile__media--plug .card-tile__icon {
+  color: rgba(44, 103, 239, 0.9);
+}
+
+.card-tile__media--bolt .card-tile__icon {
+  color: rgba(96, 208, 233, 0.95);
+}
+
+.card-tile__media--globe .card-tile__icon {
+  color: rgba(70, 154, 103, 0.9);
+}
+
+.card-tile__media--suitcase .card-tile__icon {
+  color: rgba(139, 92, 246, 0.9);
 }
 
 .card-tile__chips {
@@ -297,43 +321,43 @@ button:hover {
 }
 
 .plug-chip--a {
-  color: #2c67ef;
+  color: var(--primary);
   background: rgba(44, 103, 239, 0.18);
   border-color: rgba(44, 103, 239, 0.35);
 }
 
 .plug-chip--b {
-  color: #60d0e9;
+  color: var(--cyan);
   background: rgba(96, 208, 233, 0.18);
   border-color: rgba(96, 208, 233, 0.35);
 }
 
 .plug-chip--c {
-  color: #469a67;
+  color: var(--green);
   background: rgba(70, 154, 103, 0.2);
   border-color: rgba(70, 154, 103, 0.35);
 }
 
 .plug-chip--f {
-  color: #f4c430;
+  color: var(--yellow);
   background: rgba(244, 196, 48, 0.2);
   border-color: rgba(244, 196, 48, 0.35);
 }
 
 .plug-chip--g {
-  color: #8b5cf6;
+  color: var(--violet);
   background: rgba(139, 92, 246, 0.2);
   border-color: rgba(139, 92, 246, 0.35);
 }
 
 .plug-chip--i {
-  color: #f97316;
+  color: var(--orange);
   background: rgba(249, 115, 22, 0.18);
   border-color: rgba(249, 115, 22, 0.35);
 }
 
 .plug-chip--l {
-  color: #10b981;
+  color: var(--emerald);
   background: rgba(16, 185, 129, 0.2);
   border-color: rgba(16, 185, 129, 0.35);
 }
