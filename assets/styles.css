@@ -218,9 +218,17 @@ button:hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-tile:hover {
+.card-tile:hover,
+.card-tile:focus-within {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.card-tile__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
 }
 
 .card-tile__media {
@@ -234,6 +242,7 @@ button:hover {
   overflow: hidden;
   display: grid;
   place-items: center;
+  border-radius: 24px 24px 0 0;
 }
 
 .card-tile__media img {
@@ -243,6 +252,10 @@ button:hover {
   display: block;
   position: relative;
   z-index: 0;
+}
+
+.card-tile__media--has-image .card-tile__icon {
+  opacity: 0;
 }
 
 .card-tile__media::after {
@@ -259,6 +272,7 @@ button:hover {
   height: clamp(48px, 20vw, 68px);
   color: rgba(44, 103, 239, 0.9);
   z-index: 2;
+  transition: opacity 0.2s ease;
 }
 
 .card-tile__chips {
