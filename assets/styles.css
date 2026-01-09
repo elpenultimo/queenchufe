@@ -46,6 +46,17 @@ a {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
+  position: relative;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
 }
 
 .logo {
@@ -221,6 +232,8 @@ button:hover {
   );
   position: relative;
   overflow: hidden;
+  display: grid;
+  place-items: center;
 }
 
 .card-tile__media img {
@@ -228,6 +241,87 @@ button:hover {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: relative;
+  z-index: 0;
+}
+
+.card-tile__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.28));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-tile__icon {
+  width: clamp(48px, 20vw, 68px);
+  height: clamp(48px, 20vw, 68px);
+  color: rgba(44, 103, 239, 0.9);
+  z-index: 2;
+}
+
+.card-tile__chips {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+.plug-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid transparent;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+}
+
+.plug-chip--a {
+  color: #2c67ef;
+  background: rgba(44, 103, 239, 0.18);
+  border-color: rgba(44, 103, 239, 0.35);
+}
+
+.plug-chip--b {
+  color: #60d0e9;
+  background: rgba(96, 208, 233, 0.18);
+  border-color: rgba(96, 208, 233, 0.35);
+}
+
+.plug-chip--c {
+  color: #469a67;
+  background: rgba(70, 154, 103, 0.2);
+  border-color: rgba(70, 154, 103, 0.35);
+}
+
+.plug-chip--f {
+  color: #f4c430;
+  background: rgba(244, 196, 48, 0.2);
+  border-color: rgba(244, 196, 48, 0.35);
+}
+
+.plug-chip--g {
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.plug-chip--i {
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.18);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.plug-chip--l {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.35);
 }
 
 .card-tile__content {
